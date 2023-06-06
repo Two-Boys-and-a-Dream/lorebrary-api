@@ -2,7 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const { PORT } = process.env
+const mongoose = require('mongoose')
+const { PORT, MONGO_URL } = process.env
 
 // Configs
 app.disable('x-powered-by')
@@ -15,6 +16,15 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
-})
+app.listen(PORT, main)
+
+async function main() {
+    try {
+        mongoose.set('strictQuery', true)
+        await mongoose.connect(MONGO_URL)
+        console.log('Successfully connected to DB')
+        console.log(`Listening on port ${PORT}`)
+    } catch (error) {
+        console.log('error connecting to DB', error)
+    }
+}
