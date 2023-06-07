@@ -2,8 +2,14 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const Lore = require('../Model/Lore')
 
-router.get('/', (req, res) => {
-    res.send('Lore get route')
+router.get('/', async (req, res) => {
+    try {
+        let lore = await Lore.find()
+        res.status(200).json(lore)
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error.message)
+    }
 })
 
 router.get('/:id', async (req, res) => {
