@@ -26,7 +26,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const lore = await Lore.create(req.body)
+        const { title, subtitle, game, text } = req.body
+        const lore = await Lore.create({ title, subtitle, game, text })
         res.status(200).json(lore)
     } catch (error) {
         console.log(error)
