@@ -27,10 +27,10 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const query = {
-            title: req.body.title,
-            subtitle: req.body.subtitle,
-            game: req.body.game,
-            text: req.body.text,
+            title: req.body.title.toString(),
+            subtitle: req.body.subtitle.toString(),
+            game: req.body.game.toString(),
+            text: req.body.text.toString(),
         }
         const lore = await Lore.create(query)
         res.status(200).json(lore)
