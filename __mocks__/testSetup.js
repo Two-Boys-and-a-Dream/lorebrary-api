@@ -12,6 +12,7 @@ jest.mock('mongoose', () => {
             findOneAndUpdate: jest.fn(),
             findById: jest.fn(),
         })),
+        connect: jest.fn(),
     }
 })
 
