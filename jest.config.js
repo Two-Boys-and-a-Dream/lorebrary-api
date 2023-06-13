@@ -29,9 +29,9 @@ module.exports = {
     coveragePathIgnorePatterns: [
         '\\\\node_modules\\\\',
         '\\\\coverage\\\\',
-        // '\\\\data\\\\',
-        // 'jest.config.js',
-        // 'index.js',
+        '\\\\data\\\\',
+        'jest.config.js',
+        'index.js',
     ],
 
     // Indicates which provider should be used to instrument code for coverage
