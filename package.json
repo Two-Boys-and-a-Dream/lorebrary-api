@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node .",
         "dev": "nodemon .",
-        "test": "jest --coverage --passWithNoTests",
+        "test": "jest --coverage",
         "lint": "eslint .",
         "pretty": "prettier --write .",
         "prepare": "husky install"
