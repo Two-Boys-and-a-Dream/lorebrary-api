@@ -4,6 +4,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const { PORT, MONGO_URL } = process.env
+const loreRoute = require('./Routes/LoreRoute')
 
 // Configs
 app.disable('x-powered-by')
@@ -15,6 +16,8 @@ app.use(cors())
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
+
+app.use('/lore', loreRoute)
 
 app.listen(PORT, main)
 
