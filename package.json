@@ -7,7 +7,6 @@
         "start": "node .",
         "dev": "nodemon .",
         "test": "jest --coverage",
-        "ci:test": "jest",
         "lint": "eslint .",
         "pretty": "prettier --write .",
         "prepare": "husky install"

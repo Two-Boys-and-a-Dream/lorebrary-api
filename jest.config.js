@@ -31,6 +31,7 @@ module.exports = {
         '\\\\coverage\\\\',
         '\\\\data\\\\',
         'jest.config.js',
+        'index.js',
     ],
 
     // Indicates which provider should be used to instrument code for coverage
