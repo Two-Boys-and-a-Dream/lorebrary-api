@@ -1,9 +1,70 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-06-13T14:31:12.506Z",
+    "__export_date": "2023-06-22T13:52:49.197Z",
     "__export_source": "insomnia.desktop.app:v2023.2.2",
     "resources": [
+        {
+            "_id": "req_55dc33cc10c743068afdc591648a77c4",
+            "parentId": "wrk_bf4de02a0e2c4282a45cdf69911023f2",
+            "modified": 1687441877577,
+            "created": 1687441718507,
+            "url": "{{ _.url }}/lore/update",
+            "name": "lore/update",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"_id\": \"64944ece4bcf1f12059a4369\",\n\t\"game\": \"MARIO ELEPHANT\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" }
+            ],
+            "authentication": {},
+            "metaSortKey": -1687441718507,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "wrk_bf4de02a0e2c4282a45cdf69911023f2",
+            "parentId": null,
+            "modified": 1686065495454,
+            "created": 1606154977666,
+            "name": "Lorebrary-api",
+            "description": "",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "req_6b5343f27cb14645a7d27c9c038a8b00",
+            "parentId": "wrk_bf4de02a0e2c4282a45cdf69911023f2",
+            "modified": 1687441713616,
+            "created": 1687441117089,
+            "url": "{{ _.url }}/lore/64944ecf4bcf1f12059a436b",
+            "name": "lore/:id",
+            "description": "",
+            "method": "DELETE",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {},
+            "metaSortKey": -1687441117089,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
         {
             "_id": "req_7d74ec210cca4a03ad6553d22ca0a4ff",
             "parentId": "wrk_bf4de02a0e2c4282a45cdf69911023f2",
@@ -26,16 +87,6 @@
             "settingRebuildPath": true,
             "settingFollowRedirects": "global",
             "_type": "request"
-        },
-        {
-            "_id": "wrk_bf4de02a0e2c4282a45cdf69911023f2",
-            "parentId": null,
-            "modified": 1686065495454,
-            "created": 1606154977666,
-            "name": "Lorebrary-api",
-            "description": "",
-            "scope": "collection",
-            "_type": "workspace"
         },
         {
             "_id": "req_4d000088bb804bd2a1dbcdd25a334dcb",
