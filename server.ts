@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express, { type Request, type Response } from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import loreRoute from './Routes/LoreRoute.ts'
+import loreRoute from './src/Routes/LoreRoute.ts'
 
 const app = express()
 const PORT = process.env.PORT ?? '3000'
