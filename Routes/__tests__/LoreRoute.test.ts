@@ -1,4 +1,5 @@
 import { vi, describe, test, expect, beforeEach } from 'vitest'
+import { type Request, type Response } from 'express'
 import { DBLore, rawLore } from '../../data/testData.ts'
 
 // Mock mongoose module before importing anything that uses it
@@ -21,18 +22,21 @@ vi.mock('mongoose', () => ({
 }))
 
 // Mock Lore model before importing
+const mockLore = {
+  find: vi.fn(),
+  findById: vi.fn(),
+  create: vi.fn(),
+  findByIdAndDelete: vi.fn(),
+  findByIdAndUpdate: vi.fn(),
+}
+
 vi.mock('../../Model/Lore.js', () => ({
-  default: {
-    find: vi.fn(),
-    findById: vi.fn(),
-    create: vi.fn(),
-    findByIdAndDelete: vi.fn(),
-    findByIdAndUpdate: vi.fn(),
-  },
+  default: mockLore,
 }))
 
 // Import mocked module and route handlers
 const { default: Lore } = await import('../../Model/Lore.js')
+const LoreMock = Lore as unknown as typeof mockLore
 const { getAllLore, getLoreById, createLore, deleteLore, updateLore } =
   await import('../LoreRoute.js')
 
@@ -46,19 +50,19 @@ const req = {
   body: {
     ...testRawLore,
   },
-}
+} as unknown as Request
 
 const res = {
-  status: vi.fn(),
+  status: vi.fn().mockReturnThis(),
   send: vi.fn(),
   json: vi.fn(),
-}
+} as unknown as Response
 
 beforeEach(() => {
-  Lore.find.mockResolvedValue(DBLore)
-  Lore.findById.mockResolvedValue(DBLore[1])
-  Lore.create.mockResolvedValue(DBLore[0])
-  Lore.findByIdAndUpdate.mockResolvedValue(DBLore[0])
+  LoreMock.find.mockResolvedValue(DBLore)
+  LoreMock.findById.mockResolvedValue(DBLore[1])
+  LoreMock.create.mockResolvedValue(DBLore[0])
+  LoreMock.findByIdAndUpdate.mockResolvedValue(DBLore[0])
 })
 
 describe('LoreRoute', () => {
@@ -70,7 +74,7 @@ describe('LoreRoute', () => {
       expect(res.json).toHaveBeenCalledWith(DBLore)
     })
     test('handles error', async () => {
-      Lore.find.mockRejectedValue(new Error('something'))
+      LoreMock.find.mockRejectedValue(new Error('something'))
       await getAllLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)
@@ -85,7 +89,7 @@ describe('LoreRoute', () => {
       expect(res.json).toHaveBeenCalledWith(DBLore[1])
     })
     test('handles error', async () => {
-      Lore.findById.mockRejectedValue(new Error('something'))
+      LoreMock.findById.mockRejectedValue(new Error('something'))
       await getLoreById(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)
@@ -100,7 +104,7 @@ describe('LoreRoute', () => {
       expect(res.json).toHaveBeenCalledWith(DBLore[0])
     })
     test('handles error', async () => {
-      Lore.create.mockRejectedValue(new Error('something'))
+      LoreMock.create.mockRejectedValue(new Error('something'))
       await createLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)
@@ -116,7 +120,7 @@ describe('LoreRoute', () => {
       expect(res.send).toHaveBeenCalled()
     })
     test('handles error', async () => {
-      Lore.findByIdAndDelete.mockRejectedValue(new Error('something'))
+      LoreMock.findByIdAndDelete.mockRejectedValue(new Error('something'))
       await deleteLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)
@@ -131,7 +135,7 @@ describe('LoreRoute', () => {
       expect(res.json).toHaveBeenCalledWith(DBLore[0])
     })
     test('handles error', async () => {
-      Lore.findByIdAndUpdate.mockRejectedValue(new Error('something'))
+      LoreMock.findByIdAndUpdate.mockRejectedValue(new Error('something'))
       await updateLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)
