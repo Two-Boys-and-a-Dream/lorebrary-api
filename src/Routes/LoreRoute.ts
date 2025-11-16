@@ -91,7 +91,10 @@ async function deleteLore(
 ): Promise<void> {
   const { id } = req.params
 
-  if (!id) throw new Error('ID is required')
+  if (!id) {
+    res.status(400).send('ID is required');
+    return;
+  }
 
   try {
     const result = await db
