@@ -32,12 +32,15 @@ const { default: Lore } = await import('../../Model/Lore.js')
 const { getAllLore, getLoreById, createLore, deleteLore, updateLore } =
   await import('../LoreRoute.js')
 
+const testLore = DBLore[1]
+const testRawLore = rawLore[0]
+
 const req = {
   params: {
-    id: DBLore[1]._id,
+    id: testLore?._id,
   },
   body: {
-    ...rawLore[0],
+    ...testRawLore,
   },
 }
 

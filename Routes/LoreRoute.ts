@@ -1,8 +1,8 @@
-import express from 'express'
+import express, { type Request, type Response, type Router } from 'express'
 import mongoose from 'mongoose'
-import Lore from '../Model/Lore.js'
+import Lore from '../Model/Lore.ts'
 
-const router = express.Router()
+const router: Router = express.Router()
 
 router.get('/', getAllLore)
 router.get('/:id', getLoreById)
@@ -10,7 +10,7 @@ router.post('/', createLore)
 router.post('/update', updateLore)
 router.delete('/:id', deleteLore)
 
-async function getAllLore(_req, res) {
+async function getAllLore(_req: Request, res: Response): Promise<void> {
   try {
     const lore = await Lore.find()
     res.status(200)
@@ -18,11 +18,11 @@ async function getAllLore(_req, res) {
   } catch (error) {
     console.log(error)
     res.status(400)
-    res.send(error.message)
+    res.send((error as Error).message)
   }
 }
 
-async function getLoreById(req, res) {
+async function getLoreById(req: Request, res: Response): Promise<void> {
   const { id } = req.params
   try {
     const lore = await Lore.findById(new mongoose.Types.ObjectId(id))
@@ -31,11 +31,11 @@ async function getLoreById(req, res) {
   } catch (error) {
     console.log(error)
     res.status(400)
-    res.send(error.message)
+    res.send((error as Error).message)
   }
 }
 
-async function createLore(req, res) {
+async function createLore(req: Request, res: Response): Promise<void> {
   const { title, subtitle, game, text } = req.body
   try {
     const newLore = {
@@ -51,11 +51,11 @@ async function createLore(req, res) {
   } catch (error) {
     console.log(error)
     res.status(400)
-    res.send(error.message)
+    res.send((error as Error).message)
   }
 }
 
-async function deleteLore(req, res) {
+async function deleteLore(req: Request, res: Response): Promise<void> {
   const { id } = req.params
 
   try {
@@ -65,11 +65,11 @@ async function deleteLore(req, res) {
   } catch (error) {
     console.log(error)
     res.status(400)
-    res.send(error.message)
+    res.send((error as Error).message)
   }
 }
 
-async function updateLore(req, res) {
+async function updateLore(req: Request, res: Response): Promise<void> {
   const { _id, title, subtitle, game, text } = req.body
   try {
     const updatedLore = {
@@ -90,7 +90,7 @@ async function updateLore(req, res) {
   } catch (error) {
     console.log(error)
     res.status(400)
-    res.send(error.message)
+    res.send((error as Error).message)
   }
 }
 
