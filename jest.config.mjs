@@ -7,6 +7,9 @@ export default {
   // Enable ES modules support
   testEnvironment: 'node',
 
+  // Inject Jest globals into the test environment
+  injectGlobals: true,
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 

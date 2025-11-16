@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals'
+import { jest, describe, test, expect, beforeEach } from '@jest/globals'
 import { DBLore, rawLore } from '../../data/testData.js'
 
 // Mock mongoose module before importing anything that uses it

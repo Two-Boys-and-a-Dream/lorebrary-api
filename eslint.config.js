@@ -138,6 +138,7 @@ export default [
 
       // Relax some rules for tests
       'n/no-unpublished-import': 'off',
+      'n/no-extraneous-import': 'off',
       'security/detect-non-literal-fs-filename': 'off',
       'no-console': 'off',
     },
