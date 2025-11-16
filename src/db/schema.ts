@@ -22,8 +22,22 @@ export const loresTable = pgTable('lores', {
 })
 
 export const LoreSelectSchema = createSelectSchema(loresTable)
-export const LoreInsertSchema = createInsertSchema(loresTable)
-export const LoreUpdateSchema = createUpdateSchema(loresTable)
+export const LoreInsertSchema = createInsertSchema(loresTable, {
+  subtitle: (schema) =>
+    schema.transform((val: string) => (val === '' ? 'N/A' : val)),
+  game: (schema) =>
+    schema.transform((val: string) => (val === '' ? 'N/A' : val)),
+})
+export const LoreUpdateSchema = createUpdateSchema(loresTable, {
+  subtitle: (schema) =>
+    schema.transform((val: string | undefined) =>
+      val === '' ? undefined : val
+    ),
+  game: (schema) =>
+    schema.transform((val: string | undefined) =>
+      val === '' ? undefined : val
+    ),
+})
 export type Lore = typeof loresTable.$inferSelect
 export type NewLore = typeof loresTable.$inferInsert
 export type UpdateLore = Partial<typeof loresTable.$inferInsert>
