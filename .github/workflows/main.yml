@@ -10,7 +10,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for Railway
 
 jobs:
-  Railway Deploy Dev:
+  Railway_Deploy_Dev:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
