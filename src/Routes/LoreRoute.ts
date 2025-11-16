@@ -78,7 +78,7 @@ async function createLore(
     })
 
     const rows = await db.insert(loresTable).values(newLore).returning()
-    res.status(200).send(rows[0])
+    res.status(201).send(rows[0])
   } catch (error) {
     console.log(error)
     res.status(400).send((error as Error).message)
