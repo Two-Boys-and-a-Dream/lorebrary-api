@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "Node.js Server for Lorebrary web",
   "type": "module",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "node .",
-    "dev": "node .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "start": "node server.ts",
+    "dev": "node --watch server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "ts:check": "tsc --noEmit",
     "lint": "eslint .",
     "pretty": "prettier --write .",
     "pretty:check": "prettier --check .",
     "prepare": "npx simple-git-hooks",
-    "verify": "npm run pretty:check && npm run lint && npm run test"
+    "verify": "npm run pretty:check && npm run lint && npm run ts:check && npm run test"
   },
   "repository": {
     "type": "git",
@@ -37,17 +40,22 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@types/jest": "^30.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.9",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jest": "^29.1.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-vitest": "^0.5.4",
     "globals": "^16.5.0",
-    "jest": "^30.2.0",
     "prettier": "^3.6.2",
-    "simple-git-hooks": "^2.13.1"
+    "simple-git-hooks": "^2.13.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vitest": "^4.0.9"
   },
   "simple-git-hooks": {
     "pre-commit": "npm run pretty",

@@ -1,10 +1,11 @@
 import js from '@eslint/js'
 import globals from 'globals'
-import jestPlugin from 'eslint-plugin-jest'
+import vitestPlugin from 'eslint-plugin-vitest'
 import nodePlugin from 'eslint-plugin-n'
 import promisePlugin from 'eslint-plugin-promise'
 import securityPlugin from 'eslint-plugin-security'
 import prettierConfig from 'eslint-config-prettier'
+import tseslint from 'typescript-eslint'
 
 export default [
   // Base configuration - ignore patterns
@@ -21,9 +22,12 @@ export default [
   // Base recommended rules
   js.configs.recommended,
 
-  // Main configuration for all JS files
+  // TypeScript configuration
+  ...tseslint.configs.recommended,
+
+  // Main configuration for all JS/TS files
   {
-    files: ['**/*.js'],
+    files: ['**/*.js', '**/*.ts'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -109,32 +113,21 @@ export default [
     },
   },
 
-  // Jest test files configuration
+  // Vitest test files configuration
   {
-    files: ['**/*.test.js', '**/*.spec.js', '**/__tests__/**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-      },
-    },
+    files: [
+      '**/*.test.js',
+      '**/*.spec.js',
+      '**/__tests__/**/*.js',
+      '**/*.test.ts',
+      '**/*.spec.ts',
+      '**/__tests__/**/*.ts',
+    ],
     plugins: {
-      jest: jestPlugin,
+      vitest: vitestPlugin,
     },
     rules: {
-      ...jestPlugin.configs.recommended.rules,
-      ...jestPlugin.configs.style.rules,
-
-      // Jest specific rules
-      'jest/expect-expect': 'error',
-      'jest/no-disabled-tests': 'warn',
-      'jest/no-focused-tests': 'error',
-      'jest/no-identical-title': 'error',
-      'jest/prefer-to-have-length': 'warn',
-      'jest/valid-expect': 'error',
-      'jest/consistent-test-it': ['error', { fn: 'test' }],
-      'jest/prefer-expect-assertions': 'off',
-      'jest/no-standalone-expect': 'error',
-      'jest/no-test-return-statement': 'error',
+      ...vitestPlugin.configs.recommended.rules,
 
       // Relax some rules for tests
       'n/no-unpublished-import': 'off',
@@ -146,7 +139,7 @@ export default [
 
   // Mock files configuration
   {
-    files: ['**/__mocks__/**/*.js'],
+    files: ['**/__mocks__/**/*.js', '**/__mocks__/**/*.ts'],
     languageOptions: {
       globals: {
         ...globals.jest,
