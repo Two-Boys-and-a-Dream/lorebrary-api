@@ -9,6 +9,9 @@ export const loresTable = pgTable('lores', {
   subtitle: varchar({ length: 255 }).notNull().default('N/A'),
   game: varchar({ length: 255 }).notNull().default('N/A'),
   text: text().notNull(),
-  createdAt: timestamp({ mode: 'string' }).notNull().defaultNow(),
-  updatedAt: timestamp({ mode: 'string' }).notNull().defaultNow(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 })

@@ -1,6 +1,7 @@
 import express, { type Request, type Response, type Router } from 'express'
-import mongoose from 'mongoose'
-import Lore from '../Model/Lore.ts'
+import { eq } from 'drizzle-orm'
+import db from '../db/db.ts'
+import { loresTable } from '../db/schema.ts'
 
 const router: Router = express.Router()
 
@@ -12,26 +13,38 @@ router.delete('/:id', deleteLore)
 
 async function getAllLore(_req: Request, res: Response): Promise<void> {
   try {
-    const lore = await Lore.find()
-    res.status(200)
-    res.json(lore)
+    const lore = await db.select().from(loresTable)
+    res.status(200).send(lore)
   } catch (error) {
     console.log(error)
-    res.status(400)
-    res.send((error as Error).message)
+    res.status(400).send((error as Error).message)
   }
 }
 
 async function getLoreById(req: Request, res: Response): Promise<void> {
   const { id } = req.params
+
+  if (!id) {
+    res.status(400).send('ID is required')
+    return
+  }
+
   try {
-    const lore = await Lore.findById(new mongoose.Types.ObjectId(id))
-    res.status(200)
-    res.json(lore)
+    const lore = await db
+      .select()
+      .from(loresTable)
+      .where(eq(loresTable.id, id))
+      .limit(1)
+
+    if (lore.length === 0) {
+      res.status(404).send('Lore not found')
+      return
+    }
+
+    res.status(200).send(lore[0])
   } catch (error) {
     console.log(error)
-    res.status(400)
-    res.send((error as Error).message)
+    res.status(400).send(error as Error)
   }
 }
 
@@ -40,57 +53,81 @@ async function createLore(req: Request, res: Response): Promise<void> {
   try {
     const newLore = {
       title: title.toString(),
-      subtitle: subtitle.toString(),
-      game: game.toString(),
+      subtitle: subtitle?.toString() || 'N/A',
+      game: game?.toString() || 'N/A',
       text: text.toString(),
     }
 
-    const lore = await Lore.create(newLore)
-    res.status(200)
-    res.json(lore)
+    const lore = await db.insert(loresTable).values(newLore).returning()
+    res.status(200).send(lore[0])
   } catch (error) {
     console.log(error)
-    res.status(400)
-    res.send((error as Error).message)
+    res.status(400).send((error as Error).message)
   }
 }
 
 async function deleteLore(req: Request, res: Response): Promise<void> {
   const { id } = req.params
 
+  if (!id) {
+    res.status(400).send('ID is required')
+    return
+  }
+
   try {
-    await Lore.findByIdAndDelete(new mongoose.Types.ObjectId(id))
-    res.status(200)
-    res.send()
+    const result = await db
+      .delete(loresTable)
+      .where(eq(loresTable.id, id))
+      .returning()
+
+    if (result.length === 0) {
+      res.status(404).send('Lore not found')
+      return
+    }
+
+    res.status(200).send()
   } catch (error) {
     console.log(error)
-    res.status(400)
-    res.send((error as Error).message)
+    res.status(400).send((error as Error).message)
   }
 }
 
 async function updateLore(req: Request, res: Response): Promise<void> {
-  const { _id, title, subtitle, game, text } = req.body
+  const { id, title, subtitle, game, text } = req.body
+
+  if (!id) {
+    res.status(400).send('ID is required')
+    return
+  }
+
   try {
-    const updatedLore = {
-      title: title?.toString(),
-      subtitle: subtitle?.toString(),
-      game: game?.toString(),
-      text: text?.toString(),
-      updatedAt: new Date(),
+    const updatedLore: {
+      title?: string
+      subtitle?: string
+      game?: string
+      text?: string
+    } = {
+      title,
+      subtitle,
+      game,
+      text,
     }
 
-    const lore = await Lore.findByIdAndUpdate(
-      new mongoose.Types.ObjectId(_id),
-      updatedLore,
-      { new: true }
-    )
-    res.status(200)
-    res.json(lore)
+    const lore = await db
+      .update(loresTable)
+      .set(updatedLore)
+      .where(eq(loresTable.id, id))
+      .returning()
+
+    if (lore.length === 0) {
+      res.status(404).send('Lore not found')
+      return
+    }
+
+    res.status(200).json(lore[0])
   } catch (error) {
     console.log(error)
-    res.status(400)
-    res.send((error as Error).message)
+    res.status(400).send((error as Error).message)
   }
 }
 
