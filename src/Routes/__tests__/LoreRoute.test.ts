@@ -42,10 +42,9 @@ const { getAllLore, getLoreById, createLore, deleteLore, updateLore } =
 
 const testLore = DBLore[1]
 const testRawLore = rawLore[0]
-
 const req = {
   params: {
-    id: testLore?._id,
+    id: testLore?.id,
   },
   body: {
     ...testRawLore,
@@ -83,6 +82,7 @@ describe('LoreRoute', () => {
   })
   describe('getLoreById', () => {
     test('handles success', async () => {
+      // @ts-expect-error temporary
       await getLoreById(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
@@ -90,6 +90,7 @@ describe('LoreRoute', () => {
     })
     test('handles error', async () => {
       LoreMock.findById.mockRejectedValue(new Error('something'))
+      // @ts-expect-error temporary
       await getLoreById(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)
@@ -114,6 +115,7 @@ describe('LoreRoute', () => {
 
   describe('deleteLore', () => {
     test('handles success', async () => {
+      // @ts-expect-error temporary
       await deleteLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
@@ -121,6 +123,7 @@ describe('LoreRoute', () => {
     })
     test('handles error', async () => {
       LoreMock.findByIdAndDelete.mockRejectedValue(new Error('something'))
+      // @ts-expect-error temporary
       await deleteLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(400)

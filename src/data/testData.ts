@@ -15,11 +15,11 @@ const rawLore = [
 
 const DBLore = [
   {
-    _id: '507f191e810c19729de860ea',
+    id: '507f191e810c19729de860ea',
     ...rawLore[0],
   },
   {
-    _id: '3498n39g9qn59vq5vimq09fem',
+    id: '3498n39g9qn59vq5vimq09fem',
     ...rawLore[1],
   },
 ]
