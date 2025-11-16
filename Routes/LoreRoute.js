@@ -10,7 +10,7 @@ router.delete('/:id', deleteLore)
 
 async function getAllLore(_req, res) {
   try {
-    let lore = await Lore.find()
+    const lore = await Lore.find()
     res.status(200)
     res.json(lore)
   } catch (error) {

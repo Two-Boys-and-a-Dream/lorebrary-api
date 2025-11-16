@@ -34,13 +34,13 @@ beforeEach(() => {
 
 describe('LoreRoute', () => {
   describe('getAllLore', () => {
-    it('handles success', async () => {
+    test('handles success', async () => {
       await getAllLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(DBLore)
     })
-    it('handles error', async () => {
+    test('handles error', async () => {
       Lore.find.mockRejectedValue(new Error('something'))
       await getAllLore(req, res)
 
@@ -49,13 +49,13 @@ describe('LoreRoute', () => {
     })
   })
   describe('getLoreById', () => {
-    it('handles success', async () => {
+    test('handles success', async () => {
       await getLoreById(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(DBLore[1])
     })
-    it('handles error', async () => {
+    test('handles error', async () => {
       Lore.findById.mockRejectedValue(new Error('something'))
       await getLoreById(req, res)
 
@@ -64,13 +64,13 @@ describe('LoreRoute', () => {
     })
   })
   describe('createLore', () => {
-    it('handles success', async () => {
+    test('handles success', async () => {
       await createLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(DBLore[0])
     })
-    it('handles error', async () => {
+    test('handles error', async () => {
       Lore.create.mockRejectedValue(new Error('something'))
       await createLore(req, res)
 
@@ -80,13 +80,13 @@ describe('LoreRoute', () => {
   })
 
   describe('deleteLore', () => {
-    it('handles success', async () => {
+    test('handles success', async () => {
       await deleteLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.send).toHaveBeenCalled()
     })
-    it('handles error', async () => {
+    test('handles error', async () => {
       Lore.findByIdAndDelete.mockRejectedValue(new Error('something'))
       await deleteLore(req, res)
 
@@ -95,13 +95,13 @@ describe('LoreRoute', () => {
     })
   })
   describe('updateLore', () => {
-    it('handles success', async () => {
+    test('handles success', async () => {
       await updateLore(req, res)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(DBLore[0])
     })
-    it('handles error', async () => {
+    test('handles error', async () => {
       Lore.findByIdAndUpdate.mockRejectedValue(new Error('something'))
       await updateLore(req, res)
 
