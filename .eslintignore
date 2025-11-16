@@ -1,9 +1,0 @@
-# Dependencies and build artifacts
-node_modules/
-coverage/
-dist/
-build/
-*.min.js
-
-# Keep mocks for linting - they're configured in eslint.config.js
-# __mocks__

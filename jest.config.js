@@ -41,7 +41,14 @@ module.exports = {
   coverageReporters: ['json', 'text', 'lcov'],
 
   // An object that configures minimum threshold enforcement for coverage results
-  // coverageThreshold: undefined,
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100,
+    },
+  },
 
   // A path to a custom dependency extractor
   // dependencyExtractor: undefined,
@@ -105,15 +112,7 @@ module.exports = {
   // projects: undefined,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: [
-    'default',
-    [
-      'jest-sonar',
-      {
-        outputDirectory: 'coverage',
-      },
-    ],
-  ],
+  reporters: ['default'],
 
   // Automatically reset mock state before every test
   // resetMocks: false,
