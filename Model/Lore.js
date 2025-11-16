@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const LoreSchema = new mongoose.Schema({
   title: { type: String, require: true },
@@ -9,4 +9,4 @@ const LoreSchema = new mongoose.Schema({
   updatedAt: { type: Date, require: true, default: new Date() },
 })
 
-module.exports = mongoose.model('Lore', LoreSchema)
+export default mongoose.model('Lore', LoreSchema)

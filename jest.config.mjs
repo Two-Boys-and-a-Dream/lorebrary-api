@@ -3,7 +3,10 @@
  * https://jestjs.io/docs/configuration
  */
 
-module.exports = {
+export default {
+  // Enable ES modules support
+  testEnvironment: 'node',
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -20,7 +23,7 @@ module.exports = {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['Model/**/*.js', 'Routes/**/*.js'],
+  collectCoverageFrom: ['Routes/**/*.js', '!Routes/**/*.test.js'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
@@ -30,6 +33,8 @@ module.exports = {
     '\\\\node_modules\\\\',
     '\\\\coverage\\\\',
     '\\\\data\\\\',
+    '\\\\__mocks__\\\\',
+    'jest.config.mjs',
     'jest.config.js',
     'index.js',
   ],
@@ -149,7 +154,7 @@ module.exports = {
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
 
-  // The test environment that will be used for testing
+  // The test environment that will be used for testing (set at top of config)
   // testEnvironment: "jest-environment-node",
 
   // Options that will be passed to the testEnvironment

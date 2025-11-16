@@ -1,14 +1,36 @@
-const Lore = require('../../Model/Lore')
-const { DBLore, rawLore } = require('../../data/testData')
-const {
-  getAllLore,
-  getLoreById,
-  createLore,
-  deleteLore,
-  updateLore,
-} = require('../LoreRoute')
+import { jest } from '@jest/globals'
+import { DBLore, rawLore } from '../../data/testData.js'
 
-jest.mock('../../Model/Lore.js')
+// Mock mongoose module before importing anything that uses it
+jest.unstable_mockModule('mongoose', () => ({
+  default: {
+    Schema: class Schema {
+      constructor() {}
+    },
+    model: jest.fn(),
+    connect: jest.fn(),
+    set: jest.fn(),
+    Types: {
+      ObjectId: jest.fn((id) => id),
+    },
+  },
+}))
+
+// Mock Lore model before importing
+jest.unstable_mockModule('../../Model/Lore.js', () => ({
+  default: {
+    find: jest.fn(),
+    findById: jest.fn(),
+    create: jest.fn(),
+    findByIdAndDelete: jest.fn(),
+    findByIdAndUpdate: jest.fn(),
+  },
+}))
+
+// Import mocked module and route handlers
+const { default: Lore } = await import('../../Model/Lore.js')
+const { getAllLore, getLoreById, createLore, deleteLore, updateLore } =
+  await import('../LoreRoute.js')
 
 const req = {
   params: {

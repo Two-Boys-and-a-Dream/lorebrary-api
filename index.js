@@ -1,10 +1,11 @@
-require('dotenv').config()
-const express = require('express')
+import 'dotenv/config'
+import express from 'express'
+import cors from 'cors'
+import mongoose from 'mongoose'
+import loreRoute from './Routes/LoreRoute.js'
+
 const app = express()
-const cors = require('cors')
-const mongoose = require('mongoose')
 const { PORT, MONGO_URL } = process.env
-const loreRoute = require('./Routes/LoreRoute')
 
 // Configs
 app.disable('x-powered-by')

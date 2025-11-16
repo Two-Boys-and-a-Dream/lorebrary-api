@@ -1,6 +1,8 @@
-const router = require('express').Router()
-const mongoose = require('mongoose')
-const Lore = require('../Model/Lore')
+import express from 'express'
+import mongoose from 'mongoose'
+import Lore from '../Model/Lore.js'
+
+const router = express.Router()
 
 router.get('/', getAllLore)
 router.get('/:id', getLoreById)
@@ -92,9 +94,5 @@ async function updateLore(req, res) {
   }
 }
 
-module.exports = router
-module.exports.getAllLore = getAllLore
-module.exports.getLoreById = getLoreById
-module.exports.createLore = createLore
-module.exports.deleteLore = deleteLore
-module.exports.updateLore = updateLore
+export default router
+export { getAllLore, getLoreById, createLore, deleteLore, updateLore }

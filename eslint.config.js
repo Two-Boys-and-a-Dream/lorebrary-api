@@ -1,12 +1,12 @@
-const js = require('@eslint/js')
-const globals = require('globals')
-const jestPlugin = require('eslint-plugin-jest')
-const nodePlugin = require('eslint-plugin-n')
-const promisePlugin = require('eslint-plugin-promise')
-const securityPlugin = require('eslint-plugin-security')
-const prettierConfig = require('eslint-config-prettier')
+import js from '@eslint/js'
+import globals from 'globals'
+import jestPlugin from 'eslint-plugin-jest'
+import nodePlugin from 'eslint-plugin-n'
+import promisePlugin from 'eslint-plugin-promise'
+import securityPlugin from 'eslint-plugin-security'
+import prettierConfig from 'eslint-config-prettier'
 
-module.exports = [
+export default [
   // Base configuration - ignore patterns
   {
     ignores: [
@@ -26,7 +26,7 @@ module.exports = [
     files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'commonjs',
+      sourceType: 'module',
       globals: {
         ...globals.node,
         ...globals.es2021,
@@ -59,9 +59,9 @@ module.exports = [
         'error',
         { ignores: ['modules'] },
       ],
-      'n/no-missing-require': 'error',
-      'n/no-unpublished-require': 'off',
-      'n/no-extraneous-require': 'error',
+      'n/no-missing-import': 'error',
+      'n/no-unpublished-import': 'off',
+      'n/no-extraneous-import': 'error',
       'n/no-deprecated-api': 'error',
       'n/no-process-exit': 'error',
       'n/handle-callback-err': 'error',
@@ -86,7 +86,7 @@ module.exports = [
       'security/detect-no-csrf-before-method-override': 'error',
       'security/detect-non-literal-fs-filename': 'warn',
       'security/detect-non-literal-regexp': 'warn',
-      'security/detect-non-literal-require': 'off', // Too strict for dynamic requires
+      'security/detect-non-literal-require': 'off', // Not applicable to ES modules
       'security/detect-object-injection': 'off', // Too many false positives
       'security/detect-possible-timing-attacks': 'warn',
       'security/detect-pseudoRandomBytes': 'error',
@@ -137,7 +137,7 @@ module.exports = [
       'jest/no-test-return-statement': 'error',
 
       // Relax some rules for tests
-      'n/no-unpublished-require': 'off',
+      'n/no-unpublished-import': 'off',
       'security/detect-non-literal-fs-filename': 'off',
       'no-console': 'off',
     },
@@ -152,7 +152,7 @@ module.exports = [
       },
     },
     rules: {
-      'n/no-unpublished-require': 'off',
+      'n/no-unpublished-import': 'off',
     },
   },
 

@@ -2,11 +2,12 @@
   "name": "lorebrary-api",
   "version": "1.0.0",
   "description": "Node.js Server for Lorebrary web",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node .",
     "dev": "node .",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "lint": "eslint .",
     "pretty": "prettier --write .",
     "pretty:check": "prettier --check .",

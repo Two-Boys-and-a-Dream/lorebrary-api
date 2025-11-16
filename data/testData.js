@@ -24,4 +24,4 @@ const DBLore = [
   },
 ]
 
-module.exports = { rawLore, DBLore }
+export { rawLore, DBLore }
