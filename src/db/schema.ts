@@ -1,5 +1,10 @@
 import { timestamp, pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core'
 import { sql } from 'drizzle-orm'
+import {
+  createSelectSchema,
+  createInsertSchema,
+  createUpdateSchema,
+} from 'drizzle-zod'
 
 export const loresTable = pgTable('lores', {
   id: uuid()
@@ -15,3 +20,10 @@ export const loresTable = pgTable('lores', {
     .defaultNow()
     .$onUpdate(() => new Date()),
 })
+
+export const LoreSelectSchema = createSelectSchema(loresTable)
+export const LoreInsertSchema = createInsertSchema(loresTable)
+export const LoreUpdateSchema = createUpdateSchema(loresTable)
+export type Lore = typeof loresTable.$inferSelect
+export type NewLore = typeof loresTable.$inferInsert
+export type UpdateLore = Partial<typeof loresTable.$inferInsert>

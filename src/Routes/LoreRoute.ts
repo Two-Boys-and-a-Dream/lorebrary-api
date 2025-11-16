@@ -1,7 +1,16 @@
 import express, { type Request, type Response, type Router } from 'express'
 import { eq } from 'drizzle-orm'
 import db from '../db/db.ts'
-import { loresTable } from '../db/schema.ts'
+import {
+  LoreInsertSchema,
+  LoreSelectSchema,
+  LoreUpdateSchema,
+  loresTable,
+  type NewLore,
+  type Lore,
+  type UpdateLore,
+} from '../db/schema.ts'
+import { type ErrorResponse } from '../types/index.ts'
 
 const router: Router = express.Router()
 
@@ -11,7 +20,10 @@ router.post('/', createLore)
 router.post('/update', updateLore)
 router.delete('/:id', deleteLore)
 
-async function getAllLore(_req: Request, res: Response): Promise<void> {
+async function getAllLore(
+  _req: Request,
+  res: Response<ErrorResponse | Lore[]>
+): Promise<void> {
   try {
     const lore = await db.select().from(loresTable)
     res.status(200).send(lore)
@@ -21,7 +33,10 @@ async function getAllLore(_req: Request, res: Response): Promise<void> {
   }
 }
 
-async function getLoreById(req: Request, res: Response): Promise<void> {
+async function getLoreById(
+  req: Request<Pick<Lore, 'id'>>,
+  res: Response<ErrorResponse | Lore>
+): Promise<void> {
   const { id } = req.params
 
   if (!id) {
@@ -41,38 +56,42 @@ async function getLoreById(req: Request, res: Response): Promise<void> {
       return
     }
 
-    res.status(200).send(lore[0])
-  } catch (error) {
-    console.log(error)
-    res.status(400).send(error as Error)
-  }
-}
-
-async function createLore(req: Request, res: Response): Promise<void> {
-  const { title, subtitle, game, text } = req.body
-  try {
-    const newLore = {
-      title: title.toString(),
-      subtitle: subtitle?.toString() || 'N/A',
-      game: game?.toString() || 'N/A',
-      text: text.toString(),
-    }
-
-    const lore = await db.insert(loresTable).values(newLore).returning()
-    res.status(200).send(lore[0])
+    const validatedLore = LoreSelectSchema.parse(lore[0])
+    res.status(200).send(validatedLore)
   } catch (error) {
     console.log(error)
     res.status(400).send((error as Error).message)
   }
 }
 
-async function deleteLore(req: Request, res: Response): Promise<void> {
+async function createLore(
+  req: Request<unknown, Lore, NewLore>,
+  res: Response<ErrorResponse | Lore>
+): Promise<void> {
+  const { title, subtitle, game, text } = req.body
+  try {
+    const newLore = LoreInsertSchema.parse({
+      title,
+      subtitle,
+      game,
+      text,
+    })
+
+    const rows = await db.insert(loresTable).values(newLore).returning()
+    res.status(200).send(rows[0])
+  } catch (error) {
+    console.log(error)
+    res.status(400).send((error as Error).message)
+  }
+}
+
+async function deleteLore(
+  req: Request<Pick<Lore, 'id'>>,
+  res: Response<ErrorResponse | void>
+): Promise<void> {
   const { id } = req.params
 
-  if (!id) {
-    res.status(400).send('ID is required')
-    return
-  }
+  if (!id) throw new Error('ID is required')
 
   try {
     const result = await db
@@ -92,39 +111,34 @@ async function deleteLore(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function updateLore(req: Request, res: Response): Promise<void> {
+async function updateLore(
+  req: Request<unknown, Lore, UpdateLore & { id: string }>,
+  res: Response<ErrorResponse | Lore>
+): Promise<void> {
   const { id, title, subtitle, game, text } = req.body
 
-  if (!id) {
-    res.status(400).send('ID is required')
-    return
-  }
+  if (!id) throw new Error('ID is required')
 
   try {
-    const updatedLore: {
-      title?: string
-      subtitle?: string
-      game?: string
-      text?: string
-    } = {
+    const updatedLore = LoreUpdateSchema.parse({
       title,
       subtitle,
       game,
       text,
-    }
+    })
 
-    const lore = await db
+    const rows = await db
       .update(loresTable)
       .set(updatedLore)
       .where(eq(loresTable.id, id))
       .returning()
 
-    if (lore.length === 0) {
+    if (rows.length === 0) {
       res.status(404).send('Lore not found')
       return
     }
 
-    res.status(200).json(lore[0])
+    res.status(200).send(rows[0])
   } catch (error) {
     console.log(error)
     res.status(400).send((error as Error).message)
