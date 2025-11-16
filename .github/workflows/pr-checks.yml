@@ -6,22 +6,18 @@ on:
   # allows you to manually trigger this in GH actions
   workflow_dispatch:
 
-env:
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} # Needed to get PR information, if any
-
 jobs:
   Test_And_Audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Setup Node 16.x
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v6
         with:
-          node-version: 16.x
+          node-version: lts/*
 
       - name: Install Packages
         run: npm ci --ignore-scripts
@@ -37,6 +33,3 @@ jobs:
 
       - name: Test
         run: npm run test
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
