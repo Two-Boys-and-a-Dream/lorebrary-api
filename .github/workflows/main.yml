@@ -6,8 +6,11 @@ on:
   # allows you to manually trigger this in GH actions
   workflow_dispatch:
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for Railway
+
 jobs:
-  Test_And_Audit:
+  Railway Deploy Dev:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
