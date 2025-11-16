@@ -1,6 +1,6 @@
 import js from '@eslint/js'
 import globals from 'globals'
-import jestPlugin from 'eslint-plugin-jest'
+import vitestPlugin from 'eslint-plugin-vitest'
 import nodePlugin from 'eslint-plugin-n'
 import promisePlugin from 'eslint-plugin-promise'
 import securityPlugin from 'eslint-plugin-security'
@@ -113,7 +113,7 @@ export default [
     },
   },
 
-  // Jest test files configuration
+  // Vitest test files configuration
   {
     files: [
       '**/*.test.js',
@@ -123,29 +123,11 @@ export default [
       '**/*.spec.ts',
       '**/__tests__/**/*.ts',
     ],
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-      },
-    },
     plugins: {
-      jest: jestPlugin,
+      vitest: vitestPlugin,
     },
     rules: {
-      ...jestPlugin.configs.recommended.rules,
-      ...jestPlugin.configs.style.rules,
-
-      // Jest specific rules
-      'jest/expect-expect': 'error',
-      'jest/no-disabled-tests': 'warn',
-      'jest/no-focused-tests': 'error',
-      'jest/no-identical-title': 'error',
-      'jest/prefer-to-have-length': 'warn',
-      'jest/valid-expect': 'error',
-      'jest/consistent-test-it': ['error', { fn: 'test' }],
-      'jest/prefer-expect-assertions': 'off',
-      'jest/no-standalone-expect': 'error',
-      'jest/no-test-return-statement': 'error',
+      ...vitestPlugin.configs.recommended.rules,
 
       // Relax some rules for tests
       'n/no-unpublished-import': 'off',
