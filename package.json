@@ -10,11 +10,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "ts:check": "tsc --noEmit",
     "lint": "eslint .",
     "pretty": "prettier --write .",
     "pretty:check": "prettier --check .",
     "prepare": "npx simple-git-hooks",
-    "verify": "npm run pretty:check && npm run lint && npm run test"
+    "verify": "npm run pretty:check && npm run lint && npm run ts:check && npm run test"
   },
   "repository": {
     "type": "git",
