@@ -11,7 +11,11 @@ vi.mock('mongoose', () => ({
     connect: vi.fn(),
     set: vi.fn(),
     Types: {
-      ObjectId: vi.fn((id) => id),
+      ObjectId: class ObjectId {
+        constructor(id: string) {
+          return id as unknown as typeof ObjectId
+        }
+      },
     },
   },
 }))
