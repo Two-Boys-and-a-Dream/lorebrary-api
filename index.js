@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 app.use('/lore', loreRoute)
 
-app.listen(PORT, main)
+app.listen(PORT, '::', main)
 
 async function main() {
   try {
