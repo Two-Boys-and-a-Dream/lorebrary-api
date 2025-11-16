@@ -3,7 +3,6 @@ import { eq } from 'drizzle-orm'
 import db from '../db/db.ts'
 import {
   LoreInsertSchema,
-  LoreSelectSchema,
   LoreUpdateSchema,
   loresTable,
   type NewLore,
@@ -25,11 +24,12 @@ async function getAllLore(
   res: Response<ErrorResponse | Lore[]>
 ): Promise<void> {
   try {
-    const lore = await db.select().from(loresTable)
-    res.status(200).send(lore)
+    const rows = await db.select().from(loresTable)
+
+    res.status(200).send(rows)
   } catch (error) {
     console.log(error)
-    res.status(400).send((error as Error).message)
+    res.status(500).send((error as Error).message)
   }
 }
 
@@ -45,22 +45,21 @@ async function getLoreById(
   }
 
   try {
-    const lore = await db
+    const rows = await db
       .select()
       .from(loresTable)
       .where(eq(loresTable.id, id))
       .limit(1)
 
-    if (lore.length === 0) {
+    if (rows.length === 0) {
       res.status(404).send('Lore not found')
       return
     }
 
-    const validatedLore = LoreSelectSchema.parse(lore[0])
-    res.status(200).send(validatedLore)
+    res.status(200).send(rows[0])
   } catch (error) {
-    console.log(error)
-    res.status(400).send((error as Error).message)
+    console.error(error)
+    res.status(500).send((error as Error).message)
   }
 }
 
@@ -80,8 +79,8 @@ async function createLore(
     const rows = await db.insert(loresTable).values(newLore).returning()
     res.status(201).send(rows[0])
   } catch (error) {
-    console.log(error)
-    res.status(400).send((error as Error).message)
+    console.error(error)
+    res.status(500).send((error as Error).message)
   }
 }
 
@@ -92,25 +91,25 @@ async function deleteLore(
   const { id } = req.params
 
   if (!id) {
-    res.status(400).send('ID is required');
-    return;
+    res.status(400).send('ID is required')
+    return
   }
 
   try {
-    const result = await db
+    const rows = await db
       .delete(loresTable)
       .where(eq(loresTable.id, id))
       .returning()
 
-    if (result.length === 0) {
+    if (rows.length === 0) {
       res.status(404).send('Lore not found')
       return
     }
 
     res.status(200).send()
   } catch (error) {
-    console.log(error)
-    res.status(400).send((error as Error).message)
+    console.error(error)
+    res.status(500).send((error as Error).message)
   }
 }
 
@@ -120,7 +119,10 @@ async function updateLore(
 ): Promise<void> {
   const { id, title, subtitle, game, text } = req.body
 
-  if (!id) throw new Error('ID is required')
+  if (!id) {
+    res.status(400).send('ID is required')
+    return
+  }
 
   try {
     const updatedLore = LoreUpdateSchema.parse({
@@ -143,8 +145,8 @@ async function updateLore(
 
     res.status(200).send(rows[0])
   } catch (error) {
-    console.log(error)
-    res.status(400).send((error as Error).message)
+    console.error(error)
+    res.status(500).send((error as Error).message)
   }
 }
 
